@@ -1,18 +1,28 @@
-import { Employee } from "../../../dataprovider/employee/entity/Employee";
-import { BaseDTO } from "./BaseDTO";
-
-export class EmployeeDTO extends BaseDTO {
-    
+export class EmployeeDTO {
     constructor(
-        private name: string, 
-        private user: string, 
-        private password: string, 
-        private department: string
-    ) {
-        super();
+        private _name: string,
+        private _user: string,
+        private _department: string,
+        private _password: string
+    ) {}
+
+    get name(): string {
+        return this._name;
     }
 
-    override validate() {
+    get user(): string {
+        return this._user;
+    }
+
+    get department(): string {
+        return this._department;
+    }
+
+    get password(): string {
+        return this._password;
+    }
+
+    validate() {
         if (!this.name || this.name == '') {
             throw new Error("The name is required.");
         }
@@ -24,23 +34,22 @@ export class EmployeeDTO extends BaseDTO {
         if (!this.user || this.user == '') {
             throw new Error("The user is required.");
         }
+
+        if (!this.password || this.password == '') {
+            throw new Error("The password is required.");
+        }
+
+        if (!this.department || this.department == '') {
+            throw new Error("The department is required.");
+        }
     }
 
-    override toEntity(): Employee {
-        return new Employee(
-            this.name,
-            this.user,
-            this.password,
-            this.department
-        );
-    }
-
-    static fromRequest({ name, user, password, department }): EmployeeDTO {
+    static fromRequest({ name, user, department, password }): EmployeeDTO {
         return new EmployeeDTO(
             name,
             user,
-            password,
-            department
-        );
+            department,
+            password
+        )
     }
 }
